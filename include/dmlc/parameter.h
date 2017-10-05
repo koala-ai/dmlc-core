@@ -205,7 +205,7 @@ struct Parameter {
 
  protected:
   /*!
-   * \brief internal function to allow declare of a parameter memember
+   * \brief internal function 允许声明一个参数成员
    * \param manager the parameter manager
    * \param key the key name of the parameter
    * \param ref the reference to the parameter in the struct.
