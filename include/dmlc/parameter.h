@@ -248,6 +248,8 @@ struct Parameter {
  * \param PType the name of parameter struct.
  * \sa Parameter
  */
+// 这个定义先声明了一个函数____MANAGER__，但并没有定义，第二个是声明了函数__DECLARE__。
+// __DECLARE__这个函数体内也有用到了宏
 #define DMLC_DECLARE_PARAMETER(PType)                                   \
   static ::dmlc::parameter::ParamManager *__MANAGER__();                \
   inline void __DECLARE__(::dmlc::parameter::ParamManagerSingleton<PType> *manager) \
@@ -273,6 +275,7 @@ struct Parameter {
  * \param PType the type of parameter struct.
  * \sa Parameter
  */
+// 定义了上面编译的 __MANAGER__ 函数
 #define DMLC_REGISTER_PARAMETER(PType)                                  \
   ::dmlc::parameter::ParamManager *PType::__MANAGER__() {               \
     static ::dmlc::parameter::ParamManagerSingleton<PType> inst(#PType); \
