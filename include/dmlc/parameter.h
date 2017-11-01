@@ -170,14 +170,14 @@ struct Parameter {
     return std::map<std::string, std::string>(vec.begin(), vec.end());
   }
   /*!
-   * \brief Write the parameters in JSON format.
+   * \brief 将参数用json格式写入.
    * \param writer JSONWriter used for writing.
    */
   inline void Save(dmlc::JSONWriter *writer) const {
     writer->Write(this->__DICT__());
   }
   /*!
-   * \brief Load the parameters from JSON.
+   * \brief 从json中加载参数
    * \param reader JSONReader used for loading.
    * \throw ParamError when something go wrong.
    */
@@ -312,7 +312,7 @@ class FieldAccessEntry {
    * \param value the value to be set
    */
   virtual void Set(void *head, const std::string &value) const = 0;
-  // check if value is OK
+  // 检测值是否是ok的 
   virtual void Check(void *head) const {}
   /*!
    * \brief get the string representation of value.
@@ -358,7 +358,7 @@ class ParamManager {
     }
   }
   /*!
-   * \brief find the access entry by parameter key
+   * \brief 通过key访问entry
    * \param key the key of the parameter.
    * \return pointer to FieldAccessEntry, NULL if nothing is found.
    */
@@ -386,7 +386,7 @@ class ParamManager {
                       parameter::ParamInitOption option) const {
     std::set<FieldAccessEntry*> selected_args;
     for (RandomAccessIterator it = begin; it != end; ++it) {
-      FieldAccessEntry *e = Find(it->first);
+      FieldAccessEntry *e = Find(it->first); // 通过key得到entry
       if (e != NULL) {
         e->Set(head, it->second);
         e->Check(head);
@@ -396,9 +396,9 @@ class ParamManager {
           unknown_args->push_back(*it);
         } else {
           if (option != parameter::kAllowUnknown) {
-            if (option == parameter::kAllowHidden &&
+            if (option == parameter::kAllowHidden &&  // kAllowHidden是格式为 __*__ 的不匹配的隐藏字段
                 it->first.length() > 4 &&
-                it->first.find("__") == 0 &&
+                it->first.find("__") == 0 && 
                 it->first.rfind("__") == it->first.length()-2) {
               continue;
             }
@@ -420,7 +420,7 @@ class ParamManager {
     }
   }
   /*!
-   * \brief internal function to add entry to manager,
+   * \brief 添加entry到manager中
    *  The manager will take ownership of the entry.
    * \param key the key to the parameters
    * \param e the pointer to the new entry.
@@ -435,7 +435,7 @@ class ParamManager {
     entry_map_[key] = e;
   }
   /*!
-   * \brief internal function to add entry to manager,
+   * \brief 当别名的参数存在，而实际参数不存在，那么直接将别名参数置空
    *  The manager will take ownership of the entry.
    * \param key the key to the parameters
    * \param e the pointer to the new entry.
@@ -495,7 +495,7 @@ class ParamManager {
     return ret;
   }
   /*!
-   * \brief Update the dictionary with values in parameter.
+   * \brief 更新参数字典.
    * \param head the head of the struct.
    * \tparam Container The container type
    * \return the parameter dictionary.
@@ -617,7 +617,7 @@ class FieldEntryBase : public FieldAccessEntry {
     if (this->type_.length() == 0) {
       this->type_ = dmlc::type_name<DType>();
     }
-    this->offset_ = ((char*)&ref) - ((char*)head);  // NOLINT(*)
+    this->offset_ = ((char*)&ref) - ((char*)head);  // NOLINT(*) //地址改变多少
   }
 
  protected:
